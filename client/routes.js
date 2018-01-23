@@ -4,6 +4,7 @@ import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 import {Main, Login, Signup, UserHome} from './components'
+import CandleStick from '../candles/src/index'
 import {me} from './store'
 
 /**

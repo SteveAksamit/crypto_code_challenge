@@ -1,7 +1,11 @@
 {
-  "name": "boilermaker",
+  "name": "cryptocodechallenge",
   "version": "1.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SteveAksamit/crypto_code_challenge"
+  },
+  "description": "Crypto Code Challenge",
   "engines": {
     "node": ">= 7.0.0"
   },
@@ -25,9 +29,13 @@
     "body-parser": "^1.16.1",
     "compression": "^1.7.1",
     "connect-session-sequelize": "^4.1.0",
+    "d3": "^4.12.2",
+    "d3-time-format": "^2.1.1",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
+    "gdax": "^0.5.1",
     "history": "^4.6.3",
+    "moment": "^2.20.1",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
@@ -64,6 +72,7 @@
     "react-test-renderer": "^16.0.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-mock-store": "^1.2.3",
+    "react-stockcharts": "^0.7.0-beta.20",
     "supertest": "^3.0.0",
     "webpack": "^2.2.1",
     "webpack-livereload-plugin": "^1.0.0"
