@@ -5,6 +5,8 @@ router.use('/users', require('./users'))
 
 router.use('/gdax', require('./gdax'))
 
+router.use('/orderBook', require('./orderBook'))
+
 router.use((req, res, next) => {
   const error = new Error('Not Found')
   error.status = 404

@@ -3,17 +3,14 @@ const axios = require('axios')
 const moment = require('moment')
 const Gdax = require('gdax');
 const publicClient = new Gdax.PublicClient();
+
 module.exports = router
 
 router.get('/oneHourData', (req, res, next) => {
   let start = moment().subtract(72, 'hours').toISOString()
   let end = moment().toISOString()
-  console.log(start + ' sdf ' + end)
-
-
   publicClient.getProductHistoricRates('BTC-USD', { granularity: 3600, start: start, end: end })
     .then(data => {
-
       let subsetArr = data.slice(0, 72)
       let output = subsetArr.map(item => {
         return {
@@ -35,3 +32,8 @@ router.get('/oneHourData', (req, res, next) => {
       res.send('cannot connect to API')
     })
 })
+
+router.get('/orderBook', (req, res, next) => {
+    let test = Object.keys(orderbookSync).length
+    res.send(test)
+});
