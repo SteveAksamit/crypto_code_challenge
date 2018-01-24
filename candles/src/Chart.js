@@ -34,6 +34,7 @@ class CandleStickChartWithCHMousePointer extends React.Component {
 		const xExtents = [start, end];
 
 		return (
+
 			<ChartCanvas
 				height={400}
 				ratio={ratio}
