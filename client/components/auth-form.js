@@ -25,7 +25,8 @@ const AuthForm = (props) => {
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
+      <p>email: trader@email.com password: 123</p>
+      <p>email: viewer@email.com password: 123</p>
     </div>
   )
 }
