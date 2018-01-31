@@ -5,34 +5,63 @@ import Chart from './Chart';
 import { getData } from "./utils"
 
 import { TypeChooser } from "react-stockcharts/lib/helper";
-import {connect} from 'react-redux'
-import { fetchOneHourData } from '../../client/store'
+import { connect } from 'react-redux'
+import { fetchOneHourData, fetchOneMonthData, fetchThreeMonthData } from '../../client/store'
 
 class CandleStick extends React.Component {
-
+	constructor(props) {
+		super(props)
+		this.state = {
+			selected: 1
+		}
+		this.handleClick = this.handleClick.bind(this)
+	}
 	componentDidMount() {
 		this.props.loadInitialData()
 	}
+	handleClick(e) {
+		console.log(e.target)
+		this.setState({ selected: +e.target.value })
+	}
 
 	render() {
-		const data = this.props.data
+		let data
+		switch (this.state.selected) {
+			case 2:
+				data = this.props.data2
+				break;
+			case 3:
+				data = this.props.data3
+				break;
+			default:
+				data = this.props.data1
+		}
 		return (
-			 this.props.data.length > 0 &&
-			<Chart type="hybrid" data={data} />
+			this.props.data1.length > 0 &&
+			<div>
+				<button style={this.state.selected === 1 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={1} onClick={this.handleClick}>3D </button>
+				<button style={this.state.selected === 2 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={2} onClick={this.handleClick}>30D</button>
+				<button style={this.state.selected === 3 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={3} onClick={this.handleClick}>90D</button>
+				<Chart type="hybrid" data={data} propHeight={this.props.propHeight} propWidth={this.props.propWidth} />
+			</div>
 		)
 	}
 }
 
 const mapState = (state) => {
-  return {
-    data: state.oneHourData
-  }
+	return {
+		data1: state.oneHourData,
+		data2: state.oneMonthData,
+		data3: state.threeMonthData
+	}
 }
 
 const mapDispatch = (dispatch) => {
 	return {
 		loadInitialData() {
 			dispatch(fetchOneHourData())
+			dispatch(fetchOneMonthData())
+			dispatch(fetchThreeMonthData())
 		}
 	}
 }

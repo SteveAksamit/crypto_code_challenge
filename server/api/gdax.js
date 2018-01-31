@@ -33,7 +33,57 @@ router.get('/oneHourData', (req, res, next) => {
     })
 })
 
-router.get('/orderBook', (req, res, next) => {
-    let test = Object.keys(orderbookSync).length
-    res.send(test)
-});
+router.get('/oneMonthData', (req, res, next) => {
+  let start = moment().subtract(720, 'hours').toISOString()
+  let end = moment().toISOString()
+  publicClient.getProductHistoricRates('BTC-USD', { granularity: 21600, start: start, end: end })
+    .then(data => {
+      let subsetArr = data.slice(0, 120)
+      let output = subsetArr.map(item => {
+        return {
+          date: moment.unix(item[0]).format('YYYY-MM-DD hh:mm:A'),
+          open: item[3],
+          high: item[2],
+          low: item[1],
+          close: item[4],
+          volume: item[5]
+         }
+      })
+      return output.reverse()
+    })
+    .then(cleansedData => {
+      res.json(cleansedData)
+    })
+    .catch(error => {
+      console.error(error)
+      res.send('cannot connect to API')
+    })
+})
+
+router.get('/threeMonthData', (req, res, next) => {
+  let start = moment().subtract(2160, 'hours').toISOString()
+  let end = moment().toISOString()
+  publicClient.getProductHistoricRates('BTC-USD', { granularity: 86400, start: start, end: end })
+    .then(data => {
+      let subsetArr = data.slice(0, 90)
+      let output = subsetArr.map(item => {
+        return {
+          date: moment.unix(item[0]).format('YYYY-MM-DD hh:mm:A'),
+          open: item[3],
+          high: item[2],
+          low: item[1],
+          close: item[4],
+          volume: item[5]
+         }
+      })
+      return output.reverse()
+    })
+    .then(cleansedData => {
+      res.json(cleansedData)
+    })
+    .catch(error => {
+      console.error(error)
+      res.send('cannot connect to API')
+    })
+})
+

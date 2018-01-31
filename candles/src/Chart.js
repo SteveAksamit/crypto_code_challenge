@@ -20,7 +20,7 @@ import { last } from "react-stockcharts/lib/utils";
 
 class CandleStickChartWithCHMousePointer extends React.Component {
 	render() {
-		const { type, data: initialData, width, ratio } = this.props;
+		const { type, data: initialData, width, ratio, propHeight, propWidth } = this.props;
 
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
 			d => d.date
@@ -36,10 +36,10 @@ class CandleStickChartWithCHMousePointer extends React.Component {
 		return (
 
 			<ChartCanvas
-				height={400}
+				height={propHeight * .92 }
 				ratio={ratio}
-				width={width}
-				margin={{ left: 70, right: 70, top: 10, bottom: 30 }}
+				width={propWidth * .99}
+				margin={{ left: 30, right: 70, top: 20, bottom: 70 }}
 				type={type}
 				seriesName="MSFT"
 				data={data}
@@ -63,26 +63,7 @@ class CandleStickChartWithCHMousePointer extends React.Component {
 						displayFormat={format(".2f")}
 					/>
 					<CandlestickSeries />
-					<OHLCTooltip forChart={1} origin={[70, -5]} />
-				</Chart>
-				<Chart
-					id={2}
-					height={150}
-					yExtents={d => d.volume}
-					origin={(w, h) => [0, h - 150]}
-				>
-					<MouseCoordinateX
-						at="bottom"
-						orient="bottom"
-						displayFormat={timeFormat("%Y-%m-%d")}
-					/>
-					<MouseCoordinateY
-						at="left"
-						orient="left"
-						displayFormat={format(".4s")}
-					/>
-
-
+					<OHLCTooltip forChart={1} origin={[150, -15]} />
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>

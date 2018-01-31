@@ -16,7 +16,7 @@ class UserHome extends Component {
     this.state = {
       obbwidth: 450,
       obbheight: 405,
-      obbx: 20,
+      obbx: 60,
       obby: 450,
       obbPageSize: 10,
       obawidth: 450,
@@ -25,8 +25,8 @@ class UserHome extends Component {
       obay: 450,
       obaPageSize: 10,
       canwidth: 1200,
-      canaheight: 500,
-      canx: 0,
+      canheight: 400,
+      canx: 60,
       cany: 0
     }
   }
@@ -92,6 +92,7 @@ class UserHome extends Component {
             onDragStop={(e, d) => { this.setState({ obbx: d.x, obby: d.y }) }}
             minHeight={86}
             minWidth={403}
+            z={-2}
             onResize={(e, direction, ref, delta, position) => {
               let newHeight, newPage
               if (direction === 'right' || direction === 'left') {
@@ -120,6 +121,7 @@ class UserHome extends Component {
             onDragStop={(e, d) => { this.setState({ obax: d.x, obay: d.y }) }}
             minHeight={86}
             minWidth={403}
+            z={-1}
             onResize={(e, direction, ref, delta, position) => {
               let newHeight, newPage
               if (direction === 'right' || direction === 'left') {
@@ -147,6 +149,8 @@ class UserHome extends Component {
           size={{ width: this.state.canwidth, height: this.state.canheight }}
           position={{ x: this.state.canx, y: this.state.cany }}
           onDragStop={(e, d) => { this.setState({ canx: d.x, cany: d.y }) }}
+          style={{borderStyle: 'ridge', width: '100%', height: '100%'}}
+          z={-1}
           onResize={(e, direction, ref, delta, position) => {
             this.setState({
               canwidth: ref.offsetWidth,
@@ -156,9 +160,9 @@ class UserHome extends Component {
             });
           }}
         >
-        <div>
-          <CandleStick />
-          </div>
+
+            <CandleStick  propHeight={this.state.canheight} propWidth={this.state.canwidth}/>
+
         </Rnd>
 
       </div>

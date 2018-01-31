@@ -6,7 +6,7 @@ const parseDate = timeParse("%Y-%m-%d %I:%M:%p");
 /**
  * ACTION TYPES
  */
-const GET_ONE_HOUR_CHART_DATA = 'GET_ONE_HOUR_CHART_DATA'
+const GET_ONE_MONTH_CHART_DATA = 'GET_ONE_MONTH_CHART_DATA'
 
 /**
  * INITIAL STATE
@@ -16,16 +16,16 @@ const data = []
 /**
  * ACTION CREATORS
  */
-const getOneHourData = dataArr => ({ type: GET_ONE_HOUR_CHART_DATA, dataArr })
+const getOneMonthData = dataArr => ({ type: GET_ONE_MONTH_CHART_DATA, dataArr })
 
 /**
  * THUNK CREATORS
  */
-export const fetchOneHourData = () =>
+export const fetchOneMonthData = () =>
   dispatch =>
-    axios.get('/api/gdax/oneHourData')
+    axios.get('/api/gdax/oneMonthData')
       .then(res =>
-        dispatch(getOneHourData(res.data)))
+        dispatch(getOneMonthData(res.data)))
     .catch(err => console.log(err))
 
 /**
@@ -33,7 +33,7 @@ export const fetchOneHourData = () =>
  */
 export default function (state = data, action) {
   switch (action.type) {
-    case GET_ONE_HOUR_CHART_DATA:
+    case GET_ONE_MONTH_CHART_DATA:
       return action.dataArr.map(item => {
         item.date = parseDate(item.date)
         return item
