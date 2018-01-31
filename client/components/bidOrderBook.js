@@ -23,7 +23,8 @@ class BidOrderBook extends React.Component {
           columns: [
             {
               Header: "Price (USD)",
-              accessor: "price"
+              id: "price",
+              accessor: d => '$' + (+d.price).toFixed(2)
             },
             {
               Header: "Amount (BTC)",
@@ -33,18 +34,22 @@ class BidOrderBook extends React.Component {
             {
               Header: "Value (USD)",
               id: "value",
-              accessor: d => d.value
+              accessor: d => '$' + d.value.toFixed(2)
             },
             {
               Header: "Sum (USD)",
               id: "total",
-              accessor: d => d.total
+              accessor: d => '$' + d.total.toFixed(2)
             }
           ]
         }
       ]}
       defaultPageSize={10}
+      pageSize={this.props.pageSize}
+      minRows = {1}
       className="-striped -highlight"
+      showPageSizeOptions={false}
+      showPagination={false}
     />
     <br />
   </div>

@@ -10,24 +10,25 @@ import Rnd from 'react-rnd';
 /**
  * COMPONENT
  */
-class UserHome extends Component  {
+class UserHome extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      obbwidth: 550,
-      obbheight: 550,
+      obbwidth: 450,
+      obbheight: 405,
       obbx: 20,
       obby: 450,
-      obawidth: 550,
-      obbaheight: 550,
+      obbPageSize: 10,
+      obawidth: 450,
+      obaheight: 405,
       obax: 720,
       obay: 450,
+      obaPageSize: 10,
       canwidth: 1200,
       canaheight: 500,
       canx: 0,
       cany: 0
     }
-
   }
   componentDidMount() {
     this.props.loadBook()
@@ -35,64 +36,131 @@ class UserHome extends Component  {
   componentWillUnmount() {
     this.props.closeBook()
   }
-
+  getObaHeight() {
+    if (this.state.obaheight > 86) {
+      return Math.floor((this.state.obaheight - 52) / 34)
+    } else {
+      return 1
+    }
+  }
+  getObbHeight() {
+    if (this.state.obbheight > 86) {
+      return Math.floor((this.state.obbheight - 52) / 34)
+    } else {
+      return 1
+    }
+  }
+  getObaOffSetHeight(height) {
+    if (height > 86) {
+      let amt = height % 34
+      if (amt > 28) {
+        amt -= 18
+      } else if (amt <= 28 && amt > 18) {
+        amt -= 9
+      } else if (amt <= 18 && amt > 12) {
+        amt -= 5
+      }
+      return (height - (amt / 2))
+    } else {
+      return 86
+    }
+  }
+  getObbOffSetHeight(height) {
+    if (height > 86) {
+      let amt = height % 34
+      if (amt > 28) {
+        amt -= 18
+      } else if (amt <= 28 && amt > 18) {
+        amt -= 9
+      } else if (amt <= 18 && amt > 12) {
+        amt -= 5
+      }
+      return (height - (amt / 2))
+    } else {
+      return 86
+    }
+  }
 
   render() {
     const { orderBookBids, orderBookAsks, oneHourChartData } = this.props
     return (
       <div>
         {orderBookBids.length > 0 &&
-          <div>
-            <Rnd
-              size={{ width: this.state.obbwidth, height: this.state.obbheight }}
-              position={{ x: this.state.obbx, y: this.state.obby }}
-              onDragStop={(e, d) => { this.setState({ obbx: d.x, obby: d.y }) }}
-              onResize={(e, direction, ref, delta, position) => {
-                this.setState({
-                  obbwidth: ref.offsetWidth,
-                  obbheight: ref.offsetHeight,
-                  ...position,
-                });
-              }}
-            >
-            <BidOrderBook orderBookBids={orderBookBids} />
-            </Rnd>
-          </div>}
-          {orderBookAsks.length > 0 &&
-            <div>
-              <Rnd
-                size={{ width: this.state.obawidth, height: this.state.obaheight }}
-                position={{ x: this.state.obax, y: this.state.obay }}
-                onDragStop={(e, d) => { this.setState({ obax: d.x, obay: d.y }) }}
-                onResize={(e, direction, ref, delta, position) => {
-                  this.setState({
-                    obawidth: ref.offsetWidth,
-                    obaheight: ref.offsetHeight,
-                    ...position,
-                  });
-                }}
-              >
-              <AskOrderBook orderBookAsks={orderBookAsks} />
-              </Rnd>
-            </div>}
+          <Rnd
+            size={{ width: this.state.obbwidth, height: this.state.obbheight }}
+            position={{ x: this.state.obbx, y: this.state.obby }}
+            onDragStop={(e, d) => { this.setState({ obbx: d.x, obby: d.y }) }}
+            minHeight={86}
+            minWidth={403}
+            onResize={(e, direction, ref, delta, position) => {
+              let newHeight, newPage
+              if (direction === 'right' || direction === 'left') {
+                newHeight = this.state.obbheight
+                newPage = this.state.obbPageSize
+              } else {
+                newHeight = this.getObbOffSetHeight(ref.offsetHeight)
+                newPage = this.getObbHeight()
+              }
+              this.setState({
+                obbwidth: ref.offsetWidth,
+                obbheight: newHeight,
+                obbx: position.x,
+                obby: position.y,
+                obbPageSize: newPage
+              });
+            }}
+          >
+            <BidOrderBook orderBookBids={orderBookBids} pageSize={this.state.obbPageSize} obbPageChange={this.obbPageChange} />
+          </Rnd>
+        }
+        {orderBookAsks.length > 0 &&
+          <Rnd
+            size={{ width: this.state.obawidth, height: this.state.obaheight }}
+            position={{ x: this.state.obax, y: this.state.obay }}
+            onDragStop={(e, d) => { this.setState({ obax: d.x, obay: d.y }) }}
+            minHeight={86}
+            minWidth={403}
+            onResize={(e, direction, ref, delta, position) => {
+              let newHeight, newPage
+              if (direction === 'right' || direction === 'left') {
+                newHeight = this.state.obaheight
+                newPage = this.state.obaPageSize
+              } else {
+                newHeight = this.getObaOffSetHeight(ref.offsetHeight)
+                newPage = this.getObaHeight()
+              }
+              this.setState({
+                obawidth: ref.offsetWidth,
+                obaheight: newHeight,
+                obax: position.x,
+                obay: position.y,
+                obaPageSize: this.getObaHeight()
+              });
+            }}
+          >
+            <AskOrderBook orderBookAsks={orderBookAsks} pageSize={this.state.obaPageSize} obaPageChange={this.obaPageChange} />
+          </Rnd>
+        }
 
-              <div>
-                <Rnd
-                  size={{ width: this.state.canwidth, height: this.state.canheight }}
-                  position={{ x: this.state.canx, y: this.state.cany }}
-                  enableResizing={{top:true, right:true, bottom:true, left:true, topRight:true, bottomRight:true, bottomLeft:true, topLeft:true}}
-                  onDragStop={(e, d) => { this.setState({ canx: d.x, cany: d.y }) }}
-                  onResize={(e, direction, ref, delta, position) => {
-                    this.setState({
-                      canwidth: ref.offsetWidth,
-                      canheight: ref.offsetHeight,
-                      ...position,
-                    });
-                  }}
-                >
-                <CandleStick />
-                </Rnd>
-              </div>
+
+        <Rnd
+          size={{ width: this.state.canwidth, height: this.state.canheight }}
+          position={{ x: this.state.canx, y: this.state.cany }}
+          onDragStop={(e, d) => { this.setState({ canx: d.x, cany: d.y }) }}
+          onResize={(e, direction, ref, delta, position) => {
+            this.setState({
+              canwidth: ref.offsetWidth,
+              canheight: ref.offsetHeight,
+              canx: position.x,
+              cany: position.y,
+            });
+          }}
+        >
+        <div>
+          <CandleStick />
+          </div>
+        </Rnd>
+
       </div>
     )
   }
