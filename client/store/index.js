@@ -8,8 +8,10 @@ import oneMonthData from './oneMonthData'
 import threeMonthData from './threeMonthData'
 import orderBookBids from './orderBookBids'
 import orderBookAsks from './orderBookAsks'
+import trades from './trades'
+import orders from './orders'
 
-const reducer = combineReducers({user, oneHourData, oneMonthData, orderBookAsks, orderBookBids, threeMonthData})
+const reducer = combineReducers({user, oneHourData, oneMonthData, orderBookAsks, orderBookBids, threeMonthData, orders, trades})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -23,3 +25,5 @@ export * from './oneMonthData'
 export * from './threeMonthData'
 export * from './orderBookBids'
 export * from './orderBookAsks'
+export * from './orders'
+export * from './trades'

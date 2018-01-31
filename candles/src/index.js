@@ -20,7 +20,6 @@ class CandleStick extends React.Component {
 		this.props.loadInitialData()
 	}
 	handleClick(e) {
-		console.log(e.target)
 		this.setState({ selected: +e.target.value })
 	}
 
@@ -40,8 +39,8 @@ class CandleStick extends React.Component {
 			this.props.data1.length > 0 &&
 			<div>
 				<button style={this.state.selected === 1 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={1} onClick={this.handleClick}>3D </button>
-				<button style={this.state.selected === 2 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={2} onClick={this.handleClick}>30D</button>
-				<button style={this.state.selected === 3 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={3} onClick={this.handleClick}>90D</button>
+				{this.props.data2.length > 0 && <button style={this.state.selected === 2 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={2} onClick={this.handleClick}>30D</button>}
+				{this.props.data3.length > 0 && <button style={this.state.selected === 3 ? { background: '#ccffff', width: '41px' } : { width: '41px' }} value={3} onClick={this.handleClick}>90D</button>}
 				<Chart type="hybrid" data={data} propHeight={this.props.propHeight} propWidth={this.props.propWidth} />
 			</div>
 		)

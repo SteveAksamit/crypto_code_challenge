@@ -52,6 +52,7 @@ router.get('/oneMonthData', (req, res, next) => {
       return output.reverse()
     })
     .then(cleansedData => {
+      //console.log(cleansedData)
       res.json(cleansedData)
     })
     .catch(error => {
@@ -87,3 +88,36 @@ router.get('/threeMonthData', (req, res, next) => {
     })
 })
 
+router.get('/orders', (req, res, next) => {
+  publicClient.getProductOrderBook('BTC-USD', { level: 3})
+    .then(data => {
+      res.json(data)
+    })
+    .catch(error => {
+      console.error(error)
+      res.send('cannot connect to API')
+    })
+})
+
+router.get('/trades', (req, res, next) => {
+  publicClient.getProductTrades('BTC-USD')
+  .then(data => {
+    let output = data.map(item => {
+        item.date = moment(item.time).format("YYYY-MM-DD hh:mm:A")
+      return item
+    })
+    return output.reverse()
+  })
+  .then(cleansedData => {
+    //console.log(cleansedData)
+    res.json(cleansedData)
+  })
+    .catch(error => {
+      console.error(error)
+      res.send('cannot connect to API')
+    })
+})
+
+
+//'2018-01-31T21:19:23.341Z'
+//YYYY-MM-DD hh:mm:A
