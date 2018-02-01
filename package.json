@@ -45,6 +45,7 @@
     "react": "^16.0.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.0.0",
+    "react-form": "^2.16.1",
     "react-redux": "^5.0.2",
     "react-resizable": "^1.7.5",
     "react-rnd": "^7.3.0",

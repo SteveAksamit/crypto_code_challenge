@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchStartTimerBids, fetchStopTimerBids, fetchStartTimerAsks, fetchStopTimerAsks, fetchOneHourData, fetchOrders, fetchTrades } from '../store'
 import CandleStick from '../../candles/src/index'
-import { BidOrderBook, AskOrderBook, BuyOrders, SellOrders, Trades } from '../components'
+import { BidOrderBook, AskOrderBook, BuyOrders, SellOrders, Trades, OrderForm } from '../components'
 import Rnd from 'react-rnd';
 import { Tabs, Tab } from 'react-bootstrap';
 
@@ -34,6 +34,10 @@ class UserHome extends Component {
       audx: 1000,
       audy: 0,
       audPageSize: 10,
+      forwidth: 200,
+      forheight: 300,
+      forx: 60,
+      fory: 880,
       key: 1
     }
     this.handleSelect = this.handleSelect.bind(this);
@@ -116,9 +120,29 @@ class UserHome extends Component {
 
 
   render() {
-    const { orderBookBids, orderBookAsks, orders, trades } = this.props
+    const { orderBookBids, orderBookAsks, orders, trades, isTrader } = this.props
     return (
       <div>
+        {isTrader && <Rnd
+          size={{ width: this.state.forwidth, height: this.state.forheight }}
+          position={{ x: this.state.forx, y: this.state.fory }}
+          onDragStop={(e, d) => { this.setState({ forx: d.x, fory: d.y }) }}
+          style={{ borderStyle: 'ridge', width: '100%', height: '100%' }}
+          z={-1}
+          enableResizing={{
+            bottom: false,
+            bottomLeft: false,
+            bottomRight: false,
+            left: false,
+            right: false,
+            top: false,
+            topLeft: false,
+            topRight: false
+          }}
+        >
+          <OrderForm />
+        </Rnd>
+        }
         {orderBookBids.length > 0 &&
           <Rnd
             size={{ width: this.state.obbwidth, height: this.state.obbheight }}
@@ -185,6 +209,8 @@ class UserHome extends Component {
           onDragStop={(e, d) => { this.setState({ canx: d.x, cany: d.y }) }}
           style={{ borderStyle: 'ridge', width: '100%', height: '100%' }}
           z={-1}
+          minHeight={300}
+          minWidth={400}
           onResize={(e, direction, ref, delta, position) => {
             this.setState({
               canwidth: ref.offsetWidth,
@@ -203,7 +229,7 @@ class UserHome extends Component {
             position={{ x: this.state.audx, y: this.state.audy }}
             onDragStop={(e, d) => { this.setState({ audx: d.x, audy: d.y }) }}
             minHeight={174}
-            minWidth={320}
+            minWidth={397}
             onResize={(e, direction, ref, delta, position) => {
               let newHeight, newPage
               if (direction === 'right' || direction === 'left') {
@@ -253,7 +279,8 @@ const mapState = (state) => {
     orderBookBids: state.orderBookBids,
     oneHourChartData: state.oneHourChartData,
     orders: state.orders,
-    trades: state.trades
+    trades: state.trades,
+    isTrader: state.user.email === 'trader@email.com'
   }
 }
 
