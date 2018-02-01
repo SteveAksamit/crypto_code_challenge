@@ -36,8 +36,8 @@ class UserHome extends Component {
       audPageSize: 10,
       forwidth: 200,
       forheight: 300,
-      forx: 60,
-      fory: 880,
+      forx: 1475,
+      fory: 0,
       key: 1
     }
     this.handleSelect = this.handleSelect.bind(this);
