@@ -16,12 +16,12 @@ class UserHome extends Component {
     super(props)
     this.state = {
       obbwidth: 450,
-      obbheight: 405,
+      obbheight: 449,
       obbx: 60,
       obby: 430,
       obbPageSize: 10,
       obawidth: 450,
-      obaheight: 405,
+      obaheight: 449,
       obax: 520,
       obay: 430,
       obaPageSize: 10,
@@ -30,7 +30,7 @@ class UserHome extends Component {
       canx: 60,
       cany: 0,
       audwidth: 450,
-      audheight: 492,
+      audheight: 532,
       audx: 1000,
       audy: 0,
       audPageSize: 10,
@@ -50,21 +50,21 @@ class UserHome extends Component {
   }
   getObaHeight() {
     if (this.state.obaheight > 86) {
-      return Math.floor((this.state.obaheight - 52) / 34)
+      return Math.floor((this.state.obaheight - 52) / 38)
     } else {
       return 1
     }
   }
   getObbHeight() {
-    if (this.state.obbheight > 86) {
-      return Math.floor((this.state.obbheight - 52) / 34)
+    if (this.state.obbheight > 108) {
+      return Math.floor((this.state.obbheight - 52) / 38)
     } else {
       return 1
     }
   }
   getAudHeight() {
-    if (this.state.audheight > 174) {
-      return Math.floor((this.state.audheight - 140) / 34)
+    if (this.state.audheight > 177) {
+      return Math.floor((this.state.audheight - 139) / 38)
     } else {
       return 1
     }
@@ -100,7 +100,7 @@ class UserHome extends Component {
     }
   }
   getAudOffSetHeight(height) {
-    if (height > 174) {
+    if (height > 177) {
       let amt = height % 34
       if (amt > 28) {
         amt -= 18
@@ -111,11 +111,11 @@ class UserHome extends Component {
       }
       return (height - (amt / 2))
     } else {
-      return 174
+      return 177
     }
   }
-  handleSelect(key) {
-    this.setState({ key });
+  handleSelect(e) {
+    this.setState({ key: +e.target.value });
   }
 
 
@@ -248,21 +248,20 @@ class UserHome extends Component {
               });
             }}
           >
-            <Tabs
-              activeKey={this.state.key}
-              onSelect={this.handleSelect}
-              id="controlled-tab-example"
-            >
-              <Tab title="Trades Audit" eventKey={1}>
+            <div style={{'display': 'flex', 'justifyContent': 'space-between'}}>
+              <button style={{'width':'33%'}} onClick={this.handleSelect} value={1}>Trades Audit</button>
+              <button style={{'width':'34%'}} onClick={this.handleSelect} value={2}>Bids Audit</button>
+              <button style={{'width':'33%'}} onClick={this.handleSelect} value={3}>Asks Audit</button>
+            </div>
+              {this.state.key === 1 &&
                 <Trades data={trades} pageSize={this.state.audPageSize} />
-              </Tab>
-              <Tab title="Buy Orders Audit" eventKey={2}>
+              }
+              {this.state.key === 2 &&
                 <BuyOrders data={orders.bids} pageSize={this.state.audPageSize} />
-              </Tab>
-              <Tab title="Sell Orders Audit" eventKey={3}>
+              }
+              {this.state.key === 3 &&
                 <SellOrders data={orders.asks} pageSize={this.state.audPageSize} />
-              </Tab>
-            </Tabs>
+              }
           </Rnd>
         }
       </div>
